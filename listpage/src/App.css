@@ -38,6 +38,8 @@ body{
     height:77vh;
     background:#fff;
     border-radius:5px;
+    padding-left:0;
+    overflow: auto;
 }
 
 .showList li{
@@ -98,7 +100,7 @@ body{
     font-size:1.2em;
 }
 
-.pageButton li:hover,.pageBtn:hover{
+#choose,.pageButton li:hover,.pageBtn:hover{
     background:#27c3ff;
     color:#fff;
 }
@@ -120,7 +122,123 @@ body{
 
 .goodsOption p{
     font-size:0.9em;
-    color:#ddd;
+    color: #bdbdbd;
     text-align: center;
     margin:0;
+}
+
+.pageSelect{
+    width:120px;
+    overflow: hidden;
+}
+
+.pageSelect select{
+    border:0;
+    outline: 0;
+    width:100%;
+    height:100%;
+    padding:0 10px;
+    color:#27c3ff;
+    font-size:.9em;
+}
+
+.pageSelect select:hover{
+    background: #27c3ff;
+    color:#fff;
+}
+
+.ban{
+    color:#bdbdbd;
+    background:#ddd;
+}
+
+.ban:hover{
+    color:#bdbdbd;
+    background:#ddd;
+}
+
+.endData{
+    color:#bdbdbd;
+    text-align: center;
+    font-size:0.7em;
+    padding:20px 0;
+    margin:0;
+}
+
+.showModal{
+    position: fixed;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    background:rgba(0,0,0,0.3);
+}
+
+.showBack{
+    width:50vw;
+    height:40vh;
+    margin:0 auto;
+    background:#fff;
+    position: relative;
+    top:30%;
+    border-radius:5px;
+    padding:10px;
+}
+
+.delBtn{
+    background:#f10214;
+}
+
+.showOption{
+    margin:10px 10px 0 0;
+    float:right;
+}
+
+.showOption button{
+    padding:0 15px;
+    height:35px;
+}
+
+.showInput{
+    border-top:1px solid #ddd;
+    height:28vh;
+    border-bottom:1px solid #ddd;
+    padding-top:20px;
+}
+
+.showInput>label,#getNum{
+    display:block;
+    width:100%;
+    margin-bottom:20px;
+    margin-left:20px;
+}
+
+.showInput>label>input{
+    width:70%;
+    height:35px;
+    padding:0 10px;
+    border:1px solid #ccc;
+}
+
+.showInput>label>span,#getNum span{
+    width:20%;
+    margin-right:20px;
+}
+
+.modalTitle{
+    font-size:1.2em;
+    font-weight:600;
+    margin:10px;
+}
+
+#getNum input{
+    width:50px;
+    height:30px;
+    margin:0 10px;
+    text-align: center;
+}
+
+#getNum button{
+    height:35px;
+    width:35px;
 }
