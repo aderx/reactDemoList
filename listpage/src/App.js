@@ -7,7 +7,7 @@ import Header from './header/header'
 function App() {
   return (
     <div className="App">
-
+      <Header />
       <div className="content">
         <div className="search">
           <input type="text" placeholder="请输入商品名称"/>
