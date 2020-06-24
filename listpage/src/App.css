@@ -1,38 +1,126 @@
-.App {
-  text-align: center;
+body{
+    background:#f1f1f1;
+}
+.header{
+    height:10vh
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.header h1{
+    text-align: center;
+    line-height:10vh;
+    margin:0;
+    color:#27c3ff;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.content{
+    padding:0 1vw;
+    height:90vh;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.search{
+    height:5vh;
 }
 
-.App-link {
-  color: #61dafb;
+.search input{
+    height:70%;
+    border-radius:5px;
+    border:1px solid #ccc;
+    padding:0 10px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.search button{
+    width:70px;
+    height:75%;
+}
+
+.showList{
+    margin:0 auto;
+    height:77vh;
+    background:#fff;
+    border-radius:5px;
+}
+
+.showList li{
+    overflow: hidden;
+    list-style: none;
+    padding-bottom:10px;
+    border-bottom:1px solid #f1f1f1;
+}
+
+.goodsInfo{
+    width:80%;
+    float:left;
+    padding-left:10px;
+    box-sizing: border-box;
+}
+
+.goodsPrice{
+    color:#f10214;
+    font-size:1.2em;
+    margin:0;
+}
+
+.goodsName{
+    font-size:1.3em;
+    font-weight:600;
+    margin:10px 0;
+}
+
+.goodsOption{
+    width:20%;
+    float:left;
+}
+
+.showPage{
+    float:right;
+    height:5vh;
+    margin-top:20px;
+}
+
+.pageButton{
+    margin:0;
+    padding:0;
+    float:left;
+}
+
+.pageButton li,.pageBtn{
+    float:left;
+    list-style: none;
+    width:40px;
+    height:40px;
+    background:#fff;
+    margin-right:5px;
+    text-align: center;
+    line-height:40px;
+    color: #27c3ff;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:1.2em;
+}
+
+.pageButton li:hover,.pageBtn:hover{
+    background:#27c3ff;
+    color:#fff;
+}
+
+.editBtn{
+    border:1px solid #cccccc;
+    border-radius:5px;
+    margin-left:10px;
+    background: #27c3ff;
+    color:#fff;
+}
+
+.goodsOption button{
+    width:45%;
+    height:4vh;
+    margin:10px auto 5px;
+    display: block;
+}
+
+.goodsOption p{
+    font-size:0.9em;
+    color:#ddd;
+    text-align: center;
+    margin:0;
 }
