@@ -4,7 +4,7 @@ class PageChange extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            pageNum : 1,
+            pageNum : 1,//当前处于哪一页面
         }
     }
 
@@ -84,6 +84,8 @@ class PageChange extends Component{
     changeSize(){
         //调用父级方法，实现数据同步改变
         this.props.changeSize(this.select.value);
+        //调用子级方法，切换到第一页
+        this.changePage(1);
     }
 }
 

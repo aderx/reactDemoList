@@ -25,6 +25,7 @@ class SearchData extends Component{
         )
     }
 
+    //查找按钮的事件
     goSearch(){
         this.props.findData(this.state.filter)
         this.setState({
@@ -32,6 +33,7 @@ class SearchData extends Component{
         })
     }
 
+    //输入框内容修改
     changeValue(e){
         this.setState({
             filter:this.input.value

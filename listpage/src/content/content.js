@@ -15,15 +15,13 @@ class Content extends Component{
         this.state ={
             maxShow:5,//每页展示数据数量
             nowShow:0,//当前页数据开始下标
-            totalPage:1,
+            totalPage:1,//总分页数
             goodsList:[],//所有商品
             useData:[],//需要展示的商品
             goodsInfo:{},//单一展示的商品信息
-            showModal:false
+            showModal:false,//是否显示弹窗
         }
-        //初始时页面需要展示的为所有商品
-        //this.state.useData = this.state.goodsList;
-        this.index=0;//当前页面展示数据条数
+        this.index=0;//计算当前页面已经展示的数据条数
         //THIS绑定
         this.changeSize = this.changeSize.bind(this);
         this.changePage = this.changePage.bind(this);
@@ -121,7 +119,7 @@ class Content extends Component{
     //弹窗操作
     modalOption(item,show){
         //提取要展示的数据时使用深拷贝，目的是分离修改和保存操作
-        //当修改时只修改提取出的数据，当保存时才修改原数据S
+        //当修改时只修改提取出的数据，当保存时才修改原数据
         this.setState({
             goodsInfo:JSON.parse(JSON.stringify(item)),
             showModal:show

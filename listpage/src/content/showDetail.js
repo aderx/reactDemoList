@@ -45,25 +45,30 @@ class ShowModal extends Component{
         }
     }
 
+    //关闭弹窗
     closeModal(e){
         if(e.target.className === "showModal"){
             this.props.close({},false);
         }
     }
 
+    //修改商品价格信息
     changePrice(){
         this.props.infoEdit(this.inputPrice.value);
     }
 
+    //修改商品数量，根据传递参数的正负判断是加还是减（>0为加，否则为减）
     changeNum(op){
         this.props.infoEdit(null,op);
     }
 
+    //保存修改的数据到原数组
     saveEdit(){
         this.props.save();
         this.props.close({},false);
     }
 
+    //删除当前这条信息
     delInfo(){
         if(window.confirm("确定要删除这条商品信息吗？")){
             this.props.del();

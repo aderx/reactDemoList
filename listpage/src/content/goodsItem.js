@@ -16,6 +16,7 @@ class GoodsItem extends Component{
         )
     }
 
+    //打开弹窗事件
     getEditModal(){
         this.props.modal(this.props.data,true);
     }
