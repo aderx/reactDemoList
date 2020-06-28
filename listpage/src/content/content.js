@@ -77,6 +77,7 @@ class Content extends Component{
                     total={this.state.totalPage}
                     changePage={this.changePage}
                     changeSize={this.changeSize}
+                    onRef={this.onRef.bind(this)}
                 />
                 <ShowModal
                     show={this.state.showModal}
@@ -164,14 +165,31 @@ class Content extends Component{
 
     //删除一条商品
     delItem(){
-        let info=this.state.goodsInfo;
-        //过滤数组，将需要删除的过滤出去
-        this.setState({
-            useData:this.state.useData.filter(item=>{
-                return item.id !== info.id ;
-            })
+        let info=this.state.goodsInfo,nData=[];
+        nData = this.state.goodsList.filter(item=>{
+            return item.id !== info.id ;
         })
+        //过滤数组，将需要删除的过滤出去
+        //修改原列表。避免查找渲染等情况下被删除数据再出现
+        this.setState({
+            goodsList:nData,
+            useData:nData
+        },()=>{
+            //若当前页分页没有数据时，并且分页不处于第一页时，调用子组件“前一页”方法，并修改总分页数
+            let total = this.state.totalPage;
+            if(this.index === 0 && total !== 1){
+                this.setPage(-1);
+                total--;
+                this.setState({
+                    totalPage:total
+                })
+            }
+        });
         alert("已成功删除一条商品信息!")
+    }
+
+    onRef(ref){
+        this.setPage = ref;
     }
 }
 

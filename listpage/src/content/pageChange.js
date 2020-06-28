@@ -6,6 +6,14 @@ class PageChange extends Component{
         this.state = {
             pageNum : 1,//当前处于哪一页面
         }
+
+        this.setPgae = this.setPgae.bind(this);
+
+    }
+
+    componentDidMount() {
+        //console.log();
+        this.props.onRef(this.setPgae);
     }
 
     render() {
@@ -23,7 +31,7 @@ class PageChange extends Component{
             <div className="showPage">
                 <div
                     className={["pageBtn",this.state.pageNum===1 ? "ban":""].join(" ")}
-                    onClick={this.setPgae.bind(this,-1)}
+                    onClick={this.setPgae.bind(-1)}
                 >&lt;</div>
                 <ul className="pageButton">
                     {plist}
