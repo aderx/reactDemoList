@@ -5,14 +5,13 @@ class PageChange extends Component{
         super(props);
         this.state = {
             pageNum : 1,
-            totalPage : Math.ceil(this.props.len/this.props.size)
         }
     }
 
     render() {
         //根据页面数量生成对应数量的切换按钮
         let plist =[];
-        for(let i=1;i<=this.state.totalPage;i++){
+        for(let i=1;i<=this.props.total;i++){
             //若当前页面为正在展示的页面，则添加选中样式
             if(this.state.pageNum === i){
                 plist.push(<li id="choose" key={i} onClick={this.changePage.bind(this,i)}>{i}</li>)
@@ -30,7 +29,7 @@ class PageChange extends Component{
                     {plist}
                 </ul>
                 <div
-                    className={["pageBtn",this.state.pageNum===this.state.totalPage ? "ban":""].join(" ")}
+                    className={["pageBtn",this.state.pageNum===this.props.total ? "ban":""].join(" ")}
                     onClick={this.setPgae.bind(this,1)}
                 >&gt;</div>
                 <div className="pageBtn pageSelect">
@@ -57,7 +56,7 @@ class PageChange extends Component{
             pageNum--;
         }
         //只有不是最后一页时才可以点击下一页按钮
-        if(num >=0 && pageNum !== this.state.totalPage){
+        if(num >=0 && pageNum !== this.props.total){
             //下一页
             pageNum++;
         }
@@ -83,10 +82,6 @@ class PageChange extends Component{
 
     //修改页面数据条数
     changeSize(){
-        //重新计算所需要的页面数
-        this.setState({
-            totalPage : Math.ceil(this.props.len/this.select.value)
-        })
         //调用父级方法，实现数据同步改变
         this.props.changeSize(this.select.value);
     }

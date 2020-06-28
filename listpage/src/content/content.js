@@ -15,104 +15,14 @@ class Content extends Component{
         this.state ={
             maxShow:5,//每页展示数据数量
             nowShow:0,//当前页数据开始下标
-            goodsList:[
-                {
-                    id:"G-1",
-                    name:"商品",
-                    price:50,
-                    num:10
-                },
-                {
-                    id:"G-2",
-                    name:"商品1",
-                    price:0,
-                    num:100
-                },
-                {
-                    id:"G-3",
-                    name:"商品2",
-                    price:69,
-                    num:9
-                },
-                {
-                    id:"G-4",
-                    name:"商品3",
-                    price:5,
-                    num:5
-                },
-                {
-                    id:"G-5",
-                    name:"商品4",
-                    price:100.03,
-                    num:0
-                },
-                {
-                    id:"G-1",
-                    name:"商品",
-                    price:50,
-                    num:10
-                },
-                {
-                    id:"G-2",
-                    name:"商品1",
-                    price:0,
-                    num:100
-                },
-                {
-                    id:"G-3",
-                    name:"商品2",
-                    price:69,
-                    num:9
-                },
-                {
-                    id:"G-4",
-                    name:"商品3",
-                    price:5,
-                    num:5
-                },
-                {
-                    id:"G-5",
-                    name:"商品4",
-                    price:100.03,
-                    num:0
-                },
-                {
-                    id:"G-1",
-                    name:"商品",
-                    price:50,
-                    num:10
-                },
-                {
-                    id:"G-2",
-                    name:"商品1",
-                    price:0,
-                    num:100
-                },
-                {
-                    id:"G-3",
-                    name:"商品2",
-                    price:69,
-                    num:9
-                },
-                {
-                    id:"G-4",
-                    name:"商品3",
-                    price:5,
-                    num:5
-                },
-                {
-                    id:"G-5",
-                    name:"商品4",
-                    price:100.03,
-                    num:0
-                },
-            ],//所有商品
+            totalPage:1,
+            goodsList:[],//所有商品
             useData:[],//需要展示的商品
             goodsInfo:{},//单一展示的商品信息
             showModal:false
         }
         //初始时页面需要展示的为所有商品
-        this.state.useData = this.state.goodsList;
+        //this.state.useData = this.state.goodsList;
         this.index=0;//当前页面展示数据条数
         //THIS绑定
         this.changeSize = this.changeSize.bind(this);
@@ -122,6 +32,18 @@ class Content extends Component{
         this.goodsInfoEdit = this.goodsInfoEdit.bind(this);
         this.editSave = this.editSave.bind(this);
         this.delItem = this.delItem.bind(this);
+        //引入数据文件
+        fetch("../data.json")
+            .then(data=>{
+                return data.json();
+            })
+            .then(data=>{
+                this.setState({
+                    goodsList:data,
+                    useData:data,
+                    totalPage:Math.ceil(data.length/this.state.maxShow)
+                })
+            })
     }
     render(){
         //每次渲染时重新开始计算条数
@@ -136,7 +58,7 @@ class Content extends Component{
                         this.state.useData.map((item,index)=> {
                             //从下标为 nowShow 的数据开始显示，最多显示 maxShow 条商品
                             if(this.state.nowShow <= index && index <= this.state.nowShow+this.state.maxShow-1){
-                                //计算此次渲染共渲染出多少条数据
+                                //计算此次渲染共渲染出多少条数据，用于展示当前分页总数据条数
                                 this.index++;
                                 return (
                                     <GoodsItem
@@ -154,7 +76,7 @@ class Content extends Component{
                 </ul>
                 <PageChange
                     size={this.state.maxShow}
-                    len={this.state.useData.length}
+                    total={this.state.totalPage}
                     changePage={this.changePage}
                     changeSize={this.changeSize}
                 />
@@ -189,9 +111,10 @@ class Content extends Component{
     }
 
     //修改当前一页内容可以显示的条数
-    changeSize(size){
+    changeSize(size,value){
         this.setState({
-            maxShow:Number(size)
+            maxShow:Number(size),
+            totalPage:Math.ceil(this.state.useData.length/size)
         })
     }
 
