@@ -118,8 +118,10 @@ class Content extends Component{
         this.changeSize = this.changeSize.bind(this);
         this.changePage = this.changePage.bind(this);
         this.searchList = this.searchList.bind(this);
-        this.editGoods = this.editGoods.bind(this);
-        this.closeModal = this.closeModal.bind(this);
+        this.modalOption = this.modalOption.bind(this);
+        this.goodsInfoEdit = this.goodsInfoEdit.bind(this);
+        this.editSave = this.editSave.bind(this);
+        this.delItem = this.delItem.bind(this);
     }
     render(){
         //每次渲染时重新开始计算条数
@@ -141,7 +143,7 @@ class Content extends Component{
                                         data={item}
                                         index={index}
                                         key={item.id + "@" + index}
-                                        edit={this.editGoods}
+                                        modal={this.modalOption}
                                     />
                                 )
                             }
@@ -159,7 +161,10 @@ class Content extends Component{
                 <ShowModal
                     show={this.state.showModal}
                     info={this.state.goodsInfo}
-                    close={this.closeModal}
+                    close={this.modalOption}
+                    infoEdit={this.goodsInfoEdit}
+                    save={this.editSave}
+                    del={this.delItem}
                 />
             </div>
         )
@@ -175,7 +180,7 @@ class Content extends Component{
         });
     }
 
-    //修改当前是哪一页面
+    //修改当前分页地址
     changePage(pageNum){
         let computeShow = (pageNum-1)*this.state.maxShow;
         this.setState({
@@ -183,27 +188,67 @@ class Content extends Component{
         })
     }
 
-    //修改当前一页内容总数
+    //修改当前一页内容可以显示的条数
     changeSize(size){
         this.setState({
             maxShow:Number(size)
         })
     }
 
-    //打开弹窗
-    editGoods(item){
+    //弹窗操作
+    modalOption(item,show){
+        //提取要展示的数据时使用深拷贝，目的是分离修改和保存操作
+        //当修改时只修改提取出的数据，当保存时才修改原数据S
         this.setState({
-            goodsInfo:item,
-            showModal:true
+            goodsInfo:JSON.parse(JSON.stringify(item)),
+            showModal:show
         })
     }
 
-    //关闭弹窗
-    closeModal(){
+    //商品信息预修改、
+    goodsInfoEdit(price,num){
+        let info = this.state.goodsInfo;
+        //判断价格是否已修改
+        if(price){
+            info.price=price;
+        }
+        //判断商品数量是否已修改，若已修改则按照大于0则＋1，否则-1
+        if(num){
+            if(num>0){
+                info.num++;
+            }else{
+                info.num--;
+            }
+        }
+
         this.setState({
-            goodsInfo:{},
-            showModal:false
+            goodsInfo:info
         })
+    }
+
+    //保存商品信息
+    editSave(){
+        let info=this.state.goodsInfo;
+        //找到需要修改的数据，修改其数据
+        this.state.useData.forEach(item=>{
+            if(item.id === info.id){
+                item.price =info.price;
+                item.num = info.num;
+            }
+        })
+        alert("商品信息已保存！")
+    }
+
+    //删除一条商品
+    delItem(){
+        let info=this.state.goodsInfo;
+        //过滤数组，将需要删除的过滤出去
+        this.setState({
+            useData:this.state.useData.filter(item=>{
+                return item.id !== info.id ;
+            })
+        })
+        alert("已成功删除一条商品信息!")
     }
 }
 

@@ -6,7 +6,7 @@ class GoodsItem extends Component{
             <li>
                 <div className="goodsInfo">
                     <p className="goodsName">{this.props.data.name}</p>
-                    <p className="goodsPrice">￥{this.props.data.price.toFixed(2)}</p>
+                    <p className="goodsPrice">￥{Number(this.props.data.price).toFixed(2)}</p>
                 </div>
                 <div className="goodsOption">
                     <button className="editBtn" onClick={this.getEditModal.bind(this)}>编辑</button>
@@ -17,7 +17,7 @@ class GoodsItem extends Component{
     }
 
     getEditModal(){
-        this.props.edit(this.props.data);
+        this.props.modal(this.props.data,true);
     }
 }
 

@@ -1,9 +1,6 @@
 import React,{Component} from 'react';
 
 class ShowModal extends Component{
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         if(this.props.show){
@@ -23,21 +20,21 @@ class ShowModal extends Component{
                             <label>
                                 <span>商品价格</span>
                                 <input
-                                    type="text" value={this.props.info.price}
+                                    type="text" value={Number(this.props.info.price).toFixed(2)}
                                     onChange={this.changePrice.bind(this)}
                                     ref={input=>{this.inputPrice = input}}
                                 />
                             </label>
                             <div id="getNum">
                                 <span>商品数量</span>
-                                <button>+</button>
+                                <button onClick={this.changeNum.bind(this,-1)}>-</button>
                                 <input type="text"  value={this.props.info.num} readOnly/>
-                                <button>-</button>
+                                <button onClick={this.changeNum.bind(this,1)}>+</button>
                             </div>
                         </div>
                         <div className="showOption">
-                            <button className="editBtn">保存修改</button>
-                            <button className="editBtn delBtn">删除</button>
+                            <button className="editBtn" onClick={this.saveEdit.bind(this)}>保存修改</button>
+                            <button className="editBtn delBtn" onClick={this.delInfo.bind(this)}>删除</button>
                         </div>
 
                     </div>
@@ -50,14 +47,28 @@ class ShowModal extends Component{
 
     closeModal(e){
         if(e.target.className === "showModal"){
-            this.props.close()
+            this.props.close({},false);
         }
     }
 
     changePrice(){
-        this.setState({
-            price:Number(this.inputPrice.value)
-        })
+        this.props.infoEdit(this.inputPrice.value);
+    }
+
+    changeNum(op){
+        this.props.infoEdit(null,op);
+    }
+
+    saveEdit(){
+        this.props.save();
+        this.props.close({},false);
+    }
+
+    delInfo(){
+        if(window.confirm("确定要删除这条商品信息吗？")){
+            this.props.del();
+            this.props.close({},false);
+        }
     }
 }
 
