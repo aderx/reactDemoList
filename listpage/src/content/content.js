@@ -93,10 +93,12 @@ class Content extends Component{
     //搜索并过滤数据
     searchList(filter){
         //将过滤后的数据替换展示的数据
+        let nData = this.state.goodsList.filter(item=>{
+            return (!filter || filter === item.name)
+        })
         this.setState({
-            useData:this.state.goodsList.filter(item=>{
-                return (!filter || filter === item.name)
-            })
+            useData:nData,
+            totalPage:Math.ceil(nData.length/this.state.maxShow)
         });
     }
 
@@ -109,7 +111,7 @@ class Content extends Component{
     }
 
     //修改当前一页内容可以显示的条数
-    changeSize(size,value){
+    changeSize(size){
         this.setState({
             maxShow:Number(size),
             totalPage:Math.ceil(this.state.useData.length/size)
