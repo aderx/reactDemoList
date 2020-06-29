@@ -15,26 +15,23 @@ class SearchData extends Component{
                     placeholder="请输入商品名称"
                     ref={input=>{this.input=input}}
                     value={this.state.filter}
-                    onChange={this.changeValue.bind(this)}
+                    onChange={this.changeValue}
                 />
                 <button
                     className="editBtn"
-                    onClick={this.goSearch.bind(this)}
+                    onClick={this.goSearch}
                 >查找</button>
             </div>
         )
     }
 
     //查找按钮的事件
-    goSearch(){
-        this.props.findData(this.state.filter)
-        this.setState({
-            filter:""
-        })
+    goSearch = () => {
+        this.props.search(null,this.state.filter)
     }
 
     //输入框内容修改
-    changeValue(e){
+    changeValue = e =>{
         this.setState({
             filter:this.input.value
         })

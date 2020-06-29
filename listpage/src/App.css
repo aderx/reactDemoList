@@ -100,9 +100,9 @@ body{
     font-size:1.2em;
 }
 
-#choose,.pageButton li:hover,.pageBtn:hover{
-    background:#27c3ff;
-    color:#fff;
+.choose,.pageButton li:hover,.pageBtn:hover{
+    background:#27c3ff!important;
+    color:#fff!important;
 }
 
 .editBtn{
@@ -153,8 +153,8 @@ body{
 }
 
 .ban:hover{
-    color:#bdbdbd;
-    background:#ddd;
+    color:#bdbdbd!important;
+    background:#ddd!important;
 }
 
 .endData{
