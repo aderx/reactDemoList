@@ -134,6 +134,7 @@ class Content extends Component{
     //弹窗操作
     modalOption = (item,show) => {
         //提取要展示的数据时使用深拷贝，目的是分离修改和保存操作
+        //此处若使用浅拷贝会导致useData的数据一起被修改，这不是需要的
         //当修改时只修改提取出的数据，当保存时才修改原数据
         this.setState({
             goodsInfo:JSON.parse(JSON.stringify(item)),

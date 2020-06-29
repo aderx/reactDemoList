@@ -1,10 +1,10 @@
 import React,{Component,Fragment} from 'react';
-import './App.css';
+import './index.css';
 
 //页头
-import Header from './pages/showList/header/index'
+import Header from './header/index'
 //页面内容
-import Content from './pages/showList/content'
+import Content from './content'
 
 class App extends Component{
   render() {
