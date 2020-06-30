@@ -3,46 +3,42 @@ import React,{Component} from 'react';
 class ShowModal extends Component{
 
     render() {
-        if(this.props.show){
-            return (
-                <div className="showModal" onClick={this.closeModal.bind(this)}>
-                    <div className="showBack">
-                        <p className="modalTitle">商品信息修改</p>
-                        <div className="showInput">
-                            <label>
-                                <span>商品名称</span>
-                                <input
-                                    type="text"
-                                    value={this.props.info.name}
-                                    readOnly
-                                />
-                            </label>
-                            <label>
-                                <span>商品价格</span>
-                                <input
-                                    type="text" value={Number(this.props.info.price).toFixed(2)}
-                                    onChange={this.changePrice.bind(this)}
-                                    ref={input=>{this.inputPrice = input}}
-                                />
-                            </label>
-                            <div id="getNum">
-                                <span>商品数量</span>
-                                <button onClick={this.changeNum.bind(this,-1)}>-</button>
-                                <input type="text"  value={this.props.info.num} readOnly/>
-                                <button onClick={this.changeNum.bind(this,1)}>+</button>
-                            </div>
+        return (
+            <div className={this.props.show ? "showModal" : "hideModal"} onClick={this.closeModal.bind(this)}>
+                <div className="showBack">
+                    <p className="modalTitle">商品信息修改</p>
+                    <div className="showInput">
+                        <label>
+                            <span>商品名称</span>
+                            <input
+                                type="text"
+                                value={this.props.info.name}
+                                readOnly
+                            />
+                        </label>
+                        <label>
+                            <span>商品价格</span>
+                            <input
+                                type="text" value={Number(this.props.info.price).toFixed(2)}
+                                onChange={this.changePrice.bind(this)}
+                                ref={input=>{this.inputPrice = input}}
+                            />
+                        </label>
+                        <div id="getNum">
+                            <span>商品数量</span>
+                            <button onClick={this.changeNum.bind(this,-1)}>-</button>
+                            <input type="text"  value={this.props.info.num} readOnly/>
+                            <button onClick={this.changeNum.bind(this,1)}>+</button>
                         </div>
-                        <div className="showOption">
-                            <button className="editBtn" onClick={this.saveEdit.bind(this)}>保存修改</button>
-                            <button className="editBtn delBtn" onClick={this.delInfo.bind(this)}>删除</button>
-                        </div>
-
                     </div>
+                    <div className="showOption">
+                        <button className="editBtn" onClick={this.saveEdit.bind(this)}>保存修改</button>
+                        <button className="editBtn delBtn" onClick={this.delInfo.bind(this)}>删除</button>
+                    </div>
+
                 </div>
-            )
-        }else{
-            return "";
-        }
+            </div>
+        )
     }
 
     //关闭弹窗
