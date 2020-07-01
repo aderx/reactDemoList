@@ -1,25 +1,32 @@
 import React,{Component} from 'react'
 
 //数据检索功能组件
-import SearchData from './search'
-//切换页面功能组件
-import PageChange from './pagination'
+import Search from './search'
+//分页管理功能组件
+import Pagination from './pagination'
 //商品列表功能组件
-import GoodsItem from './listItem'
-//商品编辑功能组件
-import ShowModal from './modal'
+import ListItem from './listItem'
+//弹出层功能组件
+import Modal from './modal'
 
+
+/**
+ * 内容区域组件
+ * @author 张小富
+ * @date 2020/7/1 10:56
+ * @props
+ */
 class Content extends Component{
     constructor(props) {
         super(props);
         this.state ={
-            pageNum:1,
-            pageSize:5,
-            goodsList:[],//所有商品
-            useData:[],//需要展示的商品
-            goodsInfo:{},//弹窗需要展示的商品信息
-            showModal:false,//是否显示弹窗
-            filter:""
+            pageNum:1,//当前页码
+            pageSize:5,//当前页面可展示得数据条数
+            goodsList:[],//所有商品列表
+            useData:[],//需要展示的商品列表
+            goodsInfo:{},//弹出层展示的商品信息
+            showModal:false,//是否显示弹出层
+            filter:""//数据过滤的关键词
         }
         this.filterLength = 0;//filter过滤后的数据条数
         //引入数据文件
@@ -30,42 +37,43 @@ class Content extends Component{
             .then(data=>{
                 this.setState({
                     goodsList:data
+                },()=>{
+                    this.filterData()
                 })
-                this.filterData(data)
             })
     }
 
     render(){
-        const {useData,pageSize,pageNum,showModal,goodsInfo} = this.state;
+        const { useData , pageSize , pageNum , showModal , goodsInfo } = this.state;
         return (
             <div className="content">
-                <SearchData
+                <Search
                     search={this.filterData}
+                    setFilter={this.setFilter}
                 />
                 <ul className="showList">
                     {
                         useData.map((item,index)=> {
                             return (
-                                <GoodsItem
+                                <ListItem
                                     data={item}
                                     index={index}
-                                    key={item.id + "@" + index}
+                                    key={item.id}
                                     modal={this.modalOption}
                                 />
                             )
                         })
                     }
-                    <p className="endData">共检索出 {this.filterLength} 条数据，当前页面已展示 {useData.length} 条！</p>
+                    <p className="endData">共检索出 { this.filterLength } 条数据，当前页面已展示 { useData.length } 条！</p>
                 </ul>
-                <PageChange
+                <Pagination
                     pageSize={pageSize}
                     pageNum={pageNum}
                     len={this.filterLength}
                     setPageNum={this.setPageNum}
                     changeSize={this.changeSize}
-                    onRef={this.onRef}
                 />
-                <ShowModal
+                <Modal
                     show={showModal}
                     info={goodsInfo}
                     close={this.modalOption}
@@ -77,52 +85,53 @@ class Content extends Component{
         )
     }
 
-    //过滤并筛选出当前分页数据
-    filterData = (data,fil) => {
-        const {pageNum,pageSize,goodsList,filter} = this.state,
-            beginNum = (pageNum-1)*pageSize
-            ,uData = data ? data : goodsList
+    /**
+     * 过滤数据，筛选出当前页面展示的数据
+     */
+    filterData = () => {
+        const { pageNum , pageSize , goodsList , filter } = this.state
+            ,beginNum = (pageNum-1) * pageSize
         ;
-        //判断是否存在过滤条件。
-        //若存在则使用其，并且拷贝一份到state内，若不存在则使用state内的过滤条件
-        let uFilter = "";
-        if(fil || fil === ""){
-            uFilter = fil;
-            this.setState({
-                filter:fil
-            })
-        }else{
-            uFilter = filter
-        }
-        //进行第一遍数据过滤（关键词过滤）
-        let nData = uData.filter(item=>{
-            return (!uFilter || uFilter === item.name)
-        });
-        //用于获取第一次筛选后的数据总条数
-        this.filterLength = nData.length;
+        this.filterLength = 0;
         this.setState({
-            useData:nData.slice(beginNum,beginNum+pageSize)
-        },()=>{
-            const {useData,pageNum} = this.state;
-            //若当前页分页没有数据时，并且分页不处于第一页时，调用子组件“前一页”方法，并修改总分页数
-            if(useData.length === 0 && pageNum !== 1){
-                this.child.setPage(-1);
-            }
+            useData : goodsList.filter(item=>{
+                if( !filter || filter === item.name ){
+                    this.filterLength ++;
+                    return true;
+                }
+                return false;
+            }).slice( beginNum , beginNum+pageSize)
         });
     }
 
-    //修改当前分页地址
-    setPageNum = (page) => {
-        if(page !== this.state.pageNum){
+    /**
+     * 设置数据检索关键词
+     * @param value 数据检索关键词
+     */
+    setFilter = (value) => {
+        this.setState({
+            filter:value
+        })
+    }
+
+    /**
+     * 修改当前页面的页码
+     * @param num 修改后的页面页码
+     */
+    setPageNum = (num) => {
+        if(num !== this.state.pageNum){
             this.setState({
-                pageNum:page
+                pageNum:num
             },()=>{
                 this.filterData();
             });
         }
     }
 
-    //修改当前一页内容可以显示的条数
+    /**
+     * 修改一页显示多少条数据
+     * @param size 修改后的数据条数
+     */
     changeSize = (size)=> {
         this.setState({
             pageSize:Number(size)
@@ -131,46 +140,53 @@ class Content extends Component{
         })
     }
 
-    //弹窗操作
-    modalOption = (item,show) => {
-        //提取要展示的数据时使用深拷贝，目的是分离修改和保存操作
-        //此处若使用浅拷贝会导致useData的数据一起被修改，这不是需要的
-        //当修改时只修改提取出的数据，当保存时才修改原数据
+    /**
+     * 弹窗的操作行为，打开或者关闭弹窗
+     * @param data 弹窗所需要的商品信息
+     * @param show 是否展示弹窗，true展示，false不展示
+     */
+    modalOption = (data,show) => {
+        //此处若使用浅拷贝会导致useData的数据一起被修改，这是不期望的结果。因此使用深拷贝
         this.setState({
-            goodsInfo:JSON.parse(JSON.stringify(item)),
+            goodsInfo:JSON.parse(JSON.stringify(data)),
             showModal:show
         })
     }
 
-    //商品信息预修改、
+    /**
+     * 修改商品信息
+     * @param price 修改后的商品价格
+     * @param num 需要修改的商品数量偏移量
+     */
     goodsInfoEdit = (price,num) => {
-        let {goodsInfo} = this.state;
+        let { goodsInfo } = this.state;
+        //当数据未改变时，不修改数据，减少渲染
+        if(price === goodsInfo.price && num === goodsInfo.num){
+            return ;
+        }
         //判断价格是否已修改
         if(price){
-            goodsInfo.price=price;
+            goodsInfo.price = price;
         }
-        //判断商品数量是否已修改，若已修改则按照大于0则＋1，否则-1
+        //判断商品数量是否已修改
         if(num){
-            if(num>0){
-                goodsInfo.num++;
-            }else{
-                goodsInfo.num--;
-            }
+            goodsInfo.num += num;
         }
-
         this.setState({
             goodsInfo
         })
     }
 
-    //保存商品信息
+    /**
+     * 保存已经修改的商品信息
+     */
     editSave = () => {
-        let {goodsInfo,goodsList}=this.state;
+        let { goodsInfo , goodsList } = this.state , { id , price , num } = goodsInfo;
         //找到需要修改的数据，修改其数据
         goodsList.some(item=>{
-            if(item.id === goodsInfo.id){
-                item.price =goodsInfo.price;
-                item.num = goodsInfo.num;
+            if(item.id === id){
+                item.price = price;
+                item.num = num;
                 return true;
             }
             return false;
@@ -178,25 +194,21 @@ class Content extends Component{
         alert("商品信息已保存！")
     }
 
-    //删除一条商品
+    /**
+     * 删除当前弹出层展示的这条数据
+     */
     delItem = () => {
-        const {goodsInfo,goodsList} = this.state;
-        let nData=[];
-        nData = goodsList.filter(item=>{
-            return item.id !== goodsInfo.id ;
-        })
-        //过滤数组，将需要删除的过滤出去
-        //修改原列表。避免查找渲染等情况下被删除数据再出现
+        const { goodsInfo , goodsList } = this.state;
+
+        //过滤数组，排除需要删除的数据
         this.setState({
-            goodsList:nData
+            goodsList:goodsList.filter(item=>{
+                return item.id !== goodsInfo.id ;
+            })
         },()=>{
             this.filterData();
+            alert("已成功删除一条商品信息!");
         });
-        alert("已成功删除一条商品信息!")
-    }
-
-    onRef = (ref) => {
-        this.child = ref;
     }
 }
 

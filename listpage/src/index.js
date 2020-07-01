@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './pages/showList';
+import ShowList from './pages/showList';
 
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<ShowList />, document.getElementById('root'));
 

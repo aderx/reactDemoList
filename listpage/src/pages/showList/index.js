@@ -6,7 +6,10 @@ import Header from './header/index'
 //页面内容
 import Content from './content'
 
-class App extends Component{
+/**
+ * 整体页面组件
+ */
+class ShowList extends Component{
   render() {
       return (
           <Fragment>
@@ -17,4 +20,4 @@ class App extends Component{
   }
 }
 
-export default App;
+export default ShowList;

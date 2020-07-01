@@ -1,20 +1,20 @@
 import React,{Component} from 'react'
 
-class SearchData extends Component{
-    constructor(props) {
-        super(props);
-        this.state = {
-            filter:""
-        }
-    }
+/**
+ * 商品信息搜索组件
+ * @author 张小富
+ * @date 2020/7/1 10:20
+ * @props filter 商品信息筛选关键词
+ */
+class Search extends Component{
     render() {
+        const {filter} = this.props;
         return (
             <div className="search">
                 <input
                     type="text"
                     placeholder="请输入商品名称"
-                    ref={input=>{this.input=input}}
-                    value={this.state.filter}
+                    value={filter}
                     onChange={this.changeValue}
                 />
                 <button
@@ -25,17 +25,20 @@ class SearchData extends Component{
         )
     }
 
-    //查找按钮的事件
+    /**
+     * 开始查找匹配的商品
+     */
     goSearch = () => {
-        this.props.search(null,this.state.filter)
+        this.props.search()
     }
 
-    //输入框内容修改
+    /**
+     * 筛选关键词修改
+     * @param e 事件的$event对象
+     */
     changeValue = e =>{
-        this.setState({
-            filter:this.input.value
-        })
+        this.props.setFilter(e.target.value);
     }
 }
 
-export default SearchData;
+export default Search;
