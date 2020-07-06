@@ -1,0 +1,17 @@
+body{
+    padding:15px;
+}
+
+#searchInput{
+    width:240px;
+    margin-right:10px;
+}
+
+.listGround{
+    min-height:50vh;
+    margin:20px 0!important;
+}
+
+.modal_input{
+    margin:10px 0!important;
+}
